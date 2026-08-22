@@ -23,55 +23,45 @@ To write a program to implement the Decision Tree Regressor Model for Predicting
 ```
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
 
-# Employee dataset
-data = {
-    'Age': [25, 30, 35, 40, 45, 28, 32, 38, 42, 50],
-    'Experience': [1, 3, 5, 8, 12, 2, 4, 7, 10, 15],
-    'Education': [12, 14, 16, 16, 18, 14, 15, 16, 18, 18],
-    'Salary': [25000, 30000, 40000, 50000, 65000,
-               28000, 35000, 45000, 55000, 75000]
-}
+# Read CSV file
+data = pd.read_csv("employee_salary.csv")
 
-df = pd.DataFrame(data)
+# Independent variable
+X = data[["Level"]]
 
-# Input and output
-X = df[['Age', 'Experience', 'Education']]
-y = df['Salary']
+# Dependent variable
+y = data["Salary"]
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42
-)
-
-# Create and train Decision Tree Regressor
+# Create Decision Tree Regressor
 model = DecisionTreeRegressor(random_state=42)
-model.fit(X_train, y_train)
 
-# Prediction
-y_pred = model.predict(X_test)
+# Train the model
+model.fit(X, y)
 
-# Evaluation
-print("Actual Salary   :", y_test.values)
-print("Predicted Salary:", y_pred)
-print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
-print("R2 Score:", r2_score(y_test, y_pred))
+# Get level from user
+level = float(input("Enter employee level: "))
 
-# Predict salary for a new employee
-new_employee = [[30, 3, 14]]
-prediction = model.predict(new_employee)
+# Predict salary
+prediction = model.predict([[level]])
 
-print("Predicted Salary for New Employee:", prediction[0])
+print("Predicted Salary:", prediction[0])
+
+# Plot the Decision Tree Regression
+plt.scatter(X, y, color="red")
+plt.plot(X, model.predict(X), color="blue")
+plt.xlabel("Level")
+plt.ylabel("Salary")
+plt.title("Decision Tree Regression - Employee Salary")
+plt.show()
 
 ```
 
 ## Output:
 
-<img width="935" height="646" alt="image" src="https://github.com/user-attachments/assets/5bc6990b-a664-446f-b1f3-c00e811d1278" />
-
+<img width="1477" height="797" alt="image" src="https://github.com/user-attachments/assets/28aa36d9-9718-4035-9d4d-8803291af926" />
 
 
 ## Result:
